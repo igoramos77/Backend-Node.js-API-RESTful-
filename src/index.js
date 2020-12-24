@@ -1,4 +1,6 @@
 const { query } = require('express');
+const { v4: uuidv4 } = require('uuid');
+
 const express = require('express');
 
 const app = express();
@@ -18,26 +20,20 @@ app.use(express.json());
 * Request Body: Conteúdo na hora de criar ou editar um recurso (JSON)
 */
 
+const projects = [];
 
 app.get('/projects', (request, response) => {
-  const { title, editor } = request.query;
-  console.log(query);
 
-  return response.json([
-    'projeto 1',
-    'projeto 2',
-  ])
+  return response.json(projects)
 })
 
 app.post('/projects', (request, response) => {
-  const body = request.body;
-  console.log(body);
+  const { title, editor } = request.body;
 
-  return response.json([
-    'projeto 1',
-    'projeto 2',
-    'projeto 3',
-  ])
+  const project = { id: uuidv4(), title, editor }
+  projects.push(project);
+
+  return response.json(project);
 })
 
 app.put('/projects/:id', (request, response) => {
